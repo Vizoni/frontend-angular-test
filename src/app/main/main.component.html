@@ -1,0 +1,21 @@
+<!-- Main Screen, this is where all the page components are -->
+
+<div class="container">
+
+    <div class="form-group row">
+        <label for="example-text-input" class="col-form-label">Filter by name:</label>
+        <div class="col-4">
+            <input class="form-control" type="text" placeholder="Por exemplo: John" [(ngModel)]="searchText">
+        </div>
+        <div class="col-6">
+            <!-- <button type="button" class="btn btn-outline-danger" (click)="deleteSelectedUsers()">Delete Selected</button> -->
+            <button type="button" class="btn btn-outline-danger" (click)="deleteSelectedUsers()"  [disabled]="userComponent.selectedUsersCounter == 0">Delete Selected</button>
+            <a class="btn btn-primary" title="Download JSON" [href]="downloadJsonHref" download="download.json" (click)="downloadSelectedUsers()">Download</a>
+            <!-- <button type="button" class="btn btn-primary" (click)="downloadSelectedUsers()">Download</button> -->
+        </div>
+    </div>
+
+</div>
+<!-- <router-outlet></router-outlet> -->
+
+<app-user [searchTerm]="searchText"></app-user>

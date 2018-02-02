@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6 bt-30" *ngFor="let user of users | filter : 'firstName' : searchTerm; let i = index">
+      <div class="card" >
+        <div class="card-block">
+          <h4 class="card-title">{{ user.firstName }} {{ user.lastName }}</h4>
+          <p class="card-text">Age: {{ user.age }}</p>
+          <p class="card-text">{{ user.description }}</p>
+          <input class="form-check-input" type="checkbox" value="" [(ngModel)]="user.check" (ngModelChange)="selectSingleUser(user)">
+          <button type="button" class="btn btn-info" (click)="getUserDetails(meuModal, user)">Show</button>
+          <button type="button" class="btn btn-outline-danger" (click)="deleteUser(user)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover" style="text-align: center">
+  <thead class="thead-inverse">
+    <tr>
+      <th style="text-align: end">
+        {{selectedUsersCounter}}
+        <input type="checkbox" value="" [(ngModel)]="flagToMarkUnmark" (ngModelChange)="selectAllUsers()">
+      </th>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- filtra pelo campo 'FIRSTNAME' do array de objeto 'users' baseado no valor de 'searchTerm'  -->
+    <tr *ngFor="let user of users | filter : 'firstName' : searchTerm; let i = index">
+      <td style="text-align: end">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" [(ngModel)]="user.check" (ngModelChange)="selectSingleUser(user)">
+        </div>
+      </td>
+      <td>{{user.firstName}} {{ user.lastName }}</td>
+      <td>
+        <button type="button" class="btn btn-info" (click)="getUserDetails(meuModal, user)">Show</button>
+        <button type="button" class="btn btn-outline-danger" (click)="deleteUser(user)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #meuModal let-c="close" let-d="dismiss" let-user="userInModal">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ userInModal.firstName }} {{ userInModal.lastName }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">First name</label>
+        <div class="col-sm-8">
+          <input type="text" name="firstName" class="form-control" value="{{userInModal.firstName}}" [(ngModel)]="userEdit.firstName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Last name</label>
+        <div class="col-sm-8">
+          <input type="text" name="lastName" class="form-control" value="{{userInModal.lastName}}" [(ngModel)]="userEdit.lastName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Age</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" value="{{userInModal.age}}" readonly>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm-8">
+          <textarea class="form-control" value="{{userInModal.description}}" readonly></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Close</button> -->
+    <button type="button" class="btn btn-outline-danger" (click)="c(userEdit)">Close</button>
+    <!-- <button type="button" class="btn btn-primary" (click)="editUser(userEdit);c(false)">Save</button> -->
+    <!-- <button type="button" class="btn btn-primary" (click)="editUser(userEdit);c(false)" [disabled]="userEdit.firstName == userInModal.firstName && userEdit.lastName == userInModal.lastName">Save</button> -->
+    <button type="button" class="btn btn-primary" (click)="editUser(userEdit)" [disabled]="userEdit.firstName == userInModal.firstName && userEdit.lastName == userInModal.lastName">Save</button>
+  </div>
+</ng-template>
+
+<!-- <ng-container *ngTemplateOutlet="meuModal;context:userInModal"></ng-container> -->
